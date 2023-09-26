@@ -6,8 +6,16 @@ import requests
 def start():
     load_dotenv(find_dotenv())
     token = os.environ.get('BITLY_TOKEN')
-    headers = {'Authorization': token}
-    response = requests.get('https://api-ssl.bitly.com/v4/user', headers=headers)
+    long_url = 'http://dvmn.org'
+
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+    }
+
+    data = f'{{ "long_url": "{long_url}" }}'
+    response = requests.post('https://api-ssl.bitly.com/v4/bitlinks', headers=headers, data=data)
+
     print(response.json())
 
 
