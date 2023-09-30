@@ -1,54 +1,50 @@
-from dotenv import load_dotenv, find_dotenv
 import requests
-from urllib.parse import urlparse
+from dotenv import load_dotenv, find_dotenv
 
 
 def shorten_link(token, url):
-    load_dotenv(find_dotenv())
-
     headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
+        'Authorization': f'Bearer {token}'
     }
-
-    data = f'{{ "long_url": "{url}" }}'
-    response = requests.post('https://api-ssl.bitly.com/v4/bitlinks', headers=headers, data=data)
-    bitlink = response.json().get('link')
-
+    payload = {
+        'long_url': url
+    }
+    response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, json=payload)
+    response.raise_for_status()
+    bitlink = response.json()['link']
     return bitlink
 
 
-def count_clicks(token, bitlink):
-    load_dotenv(find_dotenv())
-
+def count_clicks(token, url):
     headers = {
         'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
     }
 
-    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary', headers=headers)
-    total_clicks = response.status_code
-
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{url}/clicks/summary', headers=headers)
+    response.raise_for_status()
+    total_clicks = response.json()['total_clicks']
     return total_clicks
 
 
-def is_bitlink(url):
-    parsed = urlparse(url)
-    if parsed.netloc == 'bit.ly':
-        try:
-            clicks_count = count_clicks(input('Enter token: '), url)
-        except requests.exceptions.HTTPError as e:
-            print(f'HTTP Error occurred: {str(e)}')
-        else:
-            print(f'Summary cliks: {clicks_count}')
+def is_bitlink(token, url):
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{url}', headers=headers)
+    if response.ok:
+        return True
     else:
-        try:
-            bitlink = shorten_link(input('Enter token: '), url)
-        except requests.exceptions.HTTPError as e:
-            print(f'HTTP Error occurred: {str(e)}')
-        else:
-            print(f'Битлинк: {bitlink}')
+        return False
 
 
 if __name__ == '__main__':
-    is_bitlink(input('Enter url: '))
+    load_dotenv(find_dotenv())
+    token = input('Enter token: ')
+    url = input('Enter URL: ')
+
+    if is_bitlink(token, url):
+        clicks_count = count_clicks(token, url)
+        print(f'Total Clicks: {clicks_count}')
+    else:
+        bitlink = shorten_link(token, url)
+        print(f'Shortened Bitlink: {bitlink}')
