@@ -1,5 +1,6 @@
 import requests
 from dotenv import load_dotenv, find_dotenv
+import os
 
 
 def shorten_link(token, url):
@@ -31,15 +32,14 @@ def is_bitlink(token, url):
         'Authorization': f'Bearer {token}',
     }
     response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{url}', headers=headers)
-    if response.ok:
-        return True
-    else:
-        return False
+    result = response.ok
+
+    return result
 
 
 if __name__ == '__main__':
     load_dotenv(find_dotenv())
-    token = input('Enter token: ')
+    token = os.getenv('BITLY_TOKEN')
     url = input('Enter URL: ')
 
     if is_bitlink(token, url):
