@@ -32,14 +32,14 @@ def is_bitlink(token, url):
         'Authorization': f'Bearer {token}',
     }
     response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{url}', headers=headers)
-    result = response.ok
+    check_response = response.ok
 
-    return result
+    return check_response
 
 
 if __name__ == '__main__':
     load_dotenv(find_dotenv())
-    token = os.getenv('BITLY_TOKEN')
+    token = os.environ['BITLY_TOKEN']
     url = input('Enter URL: ')
 
     if is_bitlink(token, url):
