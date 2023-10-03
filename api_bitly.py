@@ -32,9 +32,9 @@ def is_bitlink(token, url):
         'Authorization': f'Bearer {token}',
     }
     response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{url}', headers=headers)
-    check_response = response.ok
+    response_check = response.ok
 
-    return check_response
+    return response_check
 
 
 if __name__ == '__main__':
