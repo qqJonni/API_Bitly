@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv, find_dotenv
 import os
+import argparse
 
 
 def shorten_link(token, url):
@@ -40,7 +41,11 @@ def is_bitlink(token, url):
 if __name__ == '__main__':
     load_dotenv(find_dotenv())
     token = os.environ['BITLY_TOKEN']
-    url = input('Enter URL: ')
+    parser = argparse.ArgumentParser('Эта программа преобразует длинные url ссылки в короткие')
+    parser.add_argument('url', help='Enter url')
+    args = parser.parse_args()
+
+    url = args.url
 
     if is_bitlink(token, url):
         clicks_count = count_clicks(token, url)

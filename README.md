@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 Запуск скриптов выполняется командой:
 ```properties
-python api_bitly.py
+python api_bitly.py <url адрес>
 
 ```
 
