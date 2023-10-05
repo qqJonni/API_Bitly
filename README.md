@@ -11,9 +11,6 @@
 
 **Python 3.11 уже должен быть установлен**. 
 Используйте `pip` (или `pip3`, если возникает конфликт с Python2) для установки зависимостей:
-```properties
-pip install -r requirements.txt
-```
 
 **Создаём и активируем виртуальное окружение:**
 
@@ -21,11 +18,17 @@ pip install -r requirements.txt
 
 Для Windows: C:\> имя_окружения\Scripts\activate.bat
 
+```properties
+pip install -r requirements.txt
+```
+
+Создать в корне проекта файл .env и указать BITLY_TOKEN
+
 Необходимо перейти на сайт https://app.bitly.com/
 
 Пройти регистрацию и получить токен.
 
-Создать в корне проекта файл .env и указать TOKEN
+
 
 Запуск скриптов выполняется командой:
 ```properties

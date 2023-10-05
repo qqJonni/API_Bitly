@@ -45,11 +45,9 @@ if __name__ == '__main__':
     parser.add_argument('url', help='Enter url')
     args = parser.parse_args()
 
-    url = args.url
-
-    if is_bitlink(token, url):
-        clicks_count = count_clicks(token, url)
+    if is_bitlink(token, args.url):
+        clicks_count = count_clicks(token, args.url)
         print(f'Total Clicks: {clicks_count}')
     else:
-        bitlink = shorten_link(token, url)
+        bitlink = shorten_link(token, args.url)
         print(f'Shortened Bitlink: {bitlink}')
